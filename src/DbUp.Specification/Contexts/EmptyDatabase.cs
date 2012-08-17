@@ -9,7 +9,7 @@ namespace DbUp.Specification.Contexts
 {
     public abstract class EmptyDatabase
     {
-        public UpgradeEngine DbUpgrader;
+        public ScriptExecutingEngine DbUpgrader;
         public IScriptExecutor ScriptExecutor;
         public IJournal VersionTracker;
         public IScriptProvider ScriptProvider;
@@ -36,7 +36,7 @@ namespace DbUp.Specification.Contexts
             config.Journal = VersionTracker;
             config.Log = Log;
 
-            DbUpgrader = new UpgradeEngine(config);
+            DbUpgrader = new ScriptExecutingEngine(config);
         }
 
         [TearDown]

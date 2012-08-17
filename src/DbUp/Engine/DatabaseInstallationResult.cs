@@ -6,19 +6,19 @@ namespace DbUp.Engine
     /// <summary>
     /// Represents the results of a database upgrade.
     /// </summary>
-    public sealed class DatabaseUpgradeResult
+    public sealed class DatabaseInstallationResult
     {
         private readonly List<SqlScript> scripts;
         private readonly bool successful;
         private readonly Exception error;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DatabaseUpgradeResult"/> class.
+        /// Initializes a new instance of the <see cref="DatabaseInstallationResult"/> class.
         /// </summary>
         /// <param name="scripts">The scripts that were executed.</param>
         /// <param name="successful">if set to <c>true</c> [successful].</param>
         /// <param name="error">The error.</param>
-        public DatabaseUpgradeResult(IEnumerable<SqlScript> scripts, bool successful, Exception error)
+        public DatabaseInstallationResult(IEnumerable<SqlScript> scripts, bool successful, Exception error)
         {
             this.scripts = new List<SqlScript>();
             this.scripts.AddRange(scripts);
@@ -35,7 +35,7 @@ namespace DbUp.Engine
         }
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="DatabaseUpgradeResult"/> is successful.
+        /// Gets a value indicating whether this <see cref="DatabaseInstallationResult"/> is successful.
         /// </summary>
         public bool Successful
         {

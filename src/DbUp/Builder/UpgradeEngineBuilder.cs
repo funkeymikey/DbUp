@@ -10,13 +10,13 @@ namespace DbUp.Builder
     /// </summary>
     public class UpgradeEngineBuilder
     {
-        private readonly List<Action<UpgradeConfiguration>> callbacks = new List<Action<UpgradeConfiguration>>();
+        private readonly List<Action<DbInstallerConfiguration>> callbacks = new List<Action<DbInstallerConfiguration>>();
 
         /// <summary>
         /// Adds a callback that will be run to configure the upgrader when Build is called.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        public void Configure(Action<UpgradeConfiguration> configuration)
+        public void Configure(Action<DbInstallerConfiguration> configuration)
         {
             callbacks.Add(configuration);
         }
@@ -25,9 +25,9 @@ namespace DbUp.Builder
         /// Creates an UpgradeEngine based on this configuration.
         /// </summary>
         /// <returns></returns>
-        public UpgradeEngine Build()
+        public ScriptExecutingEngine Build()
         {
-            var config = new UpgradeConfiguration();
+            var config = new DbInstallerConfiguration();
             foreach (var callback in callbacks)
             {
                 callback(config);
@@ -35,7 +35,7 @@ namespace DbUp.Builder
 
             config.Validate();
             
-            return new UpgradeEngine(config);
+            return new ScriptExecutingEngine(config);
         }
     }
 }

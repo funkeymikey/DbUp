@@ -17,7 +17,7 @@ namespace DbUp.Specification
             var command = Substitute.For<IDbCommand>();
             connection.CreateCommand().Returns(command);
 
-            var upgradeEngine = DeployChanges.To
+            var upgradeEngine = ExecuteScripts.To
                 .SqlDatabase(()=>connection, "Db")
                 .WithScript("testscript", "$schema$Up $somevar$")
                 .JournalTo(journal)

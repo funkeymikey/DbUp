@@ -12,7 +12,7 @@ namespace DbUp.Specification
 {
     public class UpgradeEngineTests
     {
-        public class when_upgrading_a_database_with_variable_substitution : SpecificationFor<UpgradeEngine>
+        public class when_upgrading_a_database_with_variable_substitution : SpecificationFor<ScriptExecutingEngine>
         {
             private IJournal versionTracker;
             private IScriptProvider scriptProvider;
@@ -20,7 +20,7 @@ namespace DbUp.Specification
             private IDbConnection dbConnection;
             private IDbCommand dbCommand;
 
-            public override UpgradeEngine Given()
+            public override ScriptExecutingEngine Given()
             {
                 scriptProvider = Substitute.For<IScriptProvider>();
                 scriptProvider.GetScripts(Arg.Any<Func<IDbConnection>>()).Returns(new List<SqlScript> { new SqlScript("1234", "foo") });
@@ -53,13 +53,13 @@ namespace DbUp.Specification
             }
         }
 
-        public class when_marking_scripts_as_read : SpecificationFor<UpgradeEngine>
+        public class when_marking_scripts_as_read : SpecificationFor<ScriptExecutingEngine>
         {
             private IJournal versionTracker;
             private IScriptProvider scriptProvider;
             private IScriptExecutor scriptExecutor;
 
-            public override UpgradeEngine Given()
+            public override ScriptExecutingEngine Given()
             {
                 scriptProvider = Substitute.For<IScriptProvider>();
                 scriptProvider.GetScripts(Arg.Any<Func<IDbConnection>>()).Returns(new List<SqlScript> { new SqlScript("1234", "foo") });
@@ -71,7 +71,7 @@ namespace DbUp.Specification
                 config.ScriptExecutor = scriptExecutor;
                 config.Journal = versionTracker;
 
-                var upgrader = new UpgradeEngine(config);
+                var upgrader = new ScriptExecutingEngine(config);
                 return upgrader;
             }
 

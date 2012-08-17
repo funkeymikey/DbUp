@@ -47,7 +47,7 @@ namespace DbUp.Console
                 connectionString = BuildConnectionString(server, database, username, password);
             }
 
-            var dbup = DeployChanges.To
+            var dbup = ExecuteScripts.To
                 .SqlDatabase(connectionString)
                 .LogToConsole()
                 .WithScriptsFromFileSystem(directory)
@@ -55,7 +55,7 @@ namespace DbUp.Console
 
             if (!mark)
             {
-                dbup.PerformUpgrade();
+                dbup.Upgrade();
             }
             else
             {

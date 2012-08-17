@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace DbUp.Builder
 {
     /// <summary>

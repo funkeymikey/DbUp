@@ -35,6 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -53,13 +54,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Scripts\Script0001 - Create tables.sql" />
-    <EmbeddedResource Include="Scripts\Script0002 - Default feed.sql" />
-    <EmbeddedResource Include="Scripts\Script0003 - Settings.sql" />
-    <EmbeddedResource Include="Scripts\Script0004 - Redirects.sql" />
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Scripts\Script0005 - ComplexUpdate.cs" />
+    <EmbeddedResource Include="Scripts\1.0.0.0.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

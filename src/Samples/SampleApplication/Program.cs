@@ -1,7 +1,10 @@
 ﻿using System;
-using System.Reflection;
-using DbUp;
-using DbUp.Helpers;
+using System.Configuration;
+using System.Data.SqlClient;
+using DbUp.Builder;
+using DbUp.Engine;
+using DbUp.Engine.Output;
+using DbUp.Support.SqlServer;
 
 namespace SampleApplication
 {
@@ -9,38 +12,85 @@ namespace SampleApplication
     {
         public static void Main(string[] args)
         {
-            using (var database = new TemporarySqlDatabase("SampleApplication"))
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["test"].ConnectionString);
+            //builder.InitialCatalog = Guid.NewGuid().ToString();
+            string connectionString = builder.ToString();
+
+            DbInstallerConfiguration installerConfig = new DbInstallerConfiguration();
+            installerConfig.ConnectionString = connectionString;
+            installerConfig.Logger = new ConsoleUpgradeLog();
+            installerConfig.DatabaseServerAdapter = new MsSqlServerAdapter();
+            installerConfig.Journal = new DbVersionJournal();
+            installerConfig.ScriptProviders.Add(DbVersionJournal.GetEmbeddedScriptProvder(typeof(Program).Assembly));
+
+            ScriptExecutingEngine executor = new ScriptExecutingEngine(installerConfig);
+
+            
+            DbUp.Engine.ScriptExecutingEngine.DbInstallerMode installerMode = ScriptExecutingEngine.DbInstallerMode.Upgrade;
+ 
+            Console.WriteLine("Database connection string: " + connectionString);
+            if (executor.DoesDbExist)
             {
-                database.Create();
+                Console.WriteLine("Database exists!");
+                Console.WriteLine("current version: " + executor.CurrentDbVersion);
 
-                var upgrader = 
-                    DeployChanges.To
-                    .SqlDatabase(database.ConnectionString, null) //null or "" for default schema for user
-                    .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
-                    .LogToConsole()
-                    .Build();
+                Console.WriteLine("1: Upgrade");
+                Console.WriteLine("2: Reinstall");
+                Console.WriteLine("3: Remove");
 
-                var result = upgrader.PerformUpgrade();
-
-                // Display the result
-                if (result.Successful)
-                {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("Success!");
-                    Console.ReadKey();
-                }
+                string choice = Console.ReadLine();
+                if (choice == "1")
+                    installerMode = ScriptExecutingEngine.DbInstallerMode.Upgrade;
+                else if (choice == "2")
+                    installerMode = ScriptExecutingEngine.DbInstallerMode.Create;
+                else if (choice == "3")
+                    installerMode = ScriptExecutingEngine.DbInstallerMode.Drop;
                 else
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine(result.Error);
-                    Console.ReadKey();
-                    Console.WriteLine("Failed!");
-                }
-
-                // Database will be deleted at this point
+                    Environment.Exit(0);
+            }
+            else
+            {
+                Console.WriteLine("Database does not exist.  Create?");
+               
+                string choice = Console.ReadLine();
+                if (choice.StartsWith("y", StringComparison.InvariantCultureIgnoreCase))
+                    installerMode = ScriptExecutingEngine.DbInstallerMode.Create;
+                else
+                    Environment.Exit(0);
             }
 
-            Console.ReadKey();
+            Console.WriteLine("You have chosen to " + installerMode+ " your database, hit enter to continue");
+            Console.ReadLine();
+
+            executor.Execute(installerMode);
+
+            Console.WriteLine("done");
+            Console.ReadLine();
+
+
+
+            ////installerConfig.ConnectionFactory = () => new SqlConnection(uc.ConnectionString);
+            ////installerConfig.Journal = new SqlTableJournal(() => new SqlConnection(connectionString), "DbVersion", new ConsoleUpgradeLog());
+            ////installerConfig.Log = new ConsoleUpgradeLog();
+            
+            ////installerConfig.ScriptProviders.Add(new EmbeddedScriptProvider(typeof(Program).Assembly, (fileName) => fileName.EndsWith(".sql")));
+            
+            
+
+            //if(executor.DoesDbExist)
+            //{
+            //    Console.WriteLine("Db Exists.  Press enter to upgrade");
+            //    Console.ReadKey();
+            // //   executor.Upgrade();
+            //}
+            //else{
+            //    Console.WriteLine("Db does not.  Press enter to install");
+            //    executor.Install();
+            //}
+            ////executor.Upgrade();
+            ////
+
+
         }
     }
 }

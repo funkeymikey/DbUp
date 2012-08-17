@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Data.SqlClient;
 using DbUp.Engine;
 using DbUp.Engine.Output;
 
@@ -9,33 +9,21 @@ namespace DbUp.Builder
     /// <summary>
     /// Represents the configuration of an UpgradeEngine.
     /// </summary>
-    public class UpgradeConfiguration
+    public class DbInstallerConfiguration
     {
         private readonly List<IScriptProvider> scriptProviders = new List<IScriptProvider>();
         private readonly List<IScriptPreprocessor> preProcessors = new List<IScriptPreprocessor>();
         private readonly Dictionary<string, string> variables = new Dictionary<string, string>(); 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UpgradeConfiguration"/> class.
+        /// Gets or sets a connection string that is used to create connections.
         /// </summary>
-        public UpgradeConfiguration()
-        {
-            Log = new TraceUpgradeLog();
-            VariablesEnabled = true;
-        }
-
-        /// <summary>
-        /// Gets or sets a connection factory that is used to create ADO.NET connections.
-        /// </summary>
-        /// <value>
-        /// The connection factory.
-        /// </value>
-        public Func<IDbConnection> ConnectionFactory { get; set; }
+        public string ConnectionString { get; set; }
 
         /// <summary>
         /// Gets or sets a log which captures details about the upgrade.
         /// </summary>
-        public IUpgradeLog Log { get; set; }
+        public IUpgradeLog Logger { get; set; }
 
         /// <summary>
         /// Gets a mutable list of script providers.
@@ -55,7 +43,7 @@ namespace DbUp.Builder
         /// <summary>
         /// Gets or sets the script executor, which runs scripts against the underlying database.
         /// </summary>
-        public IScriptExecutor ScriptExecutor { get; set; }
+        public IDatabaseServerAdapter DatabaseServerAdapter { get; set; }
 
         /// <summary>
         /// A collection of variables to be replaced in scripts before they are run
@@ -66,20 +54,24 @@ namespace DbUp.Builder
         }
 
         /// <summary>
-        /// Determines if variables should be replaced in scripts before they are run.
+        /// Initializes a new instance of the <see cref="DbInstallerConfiguration"/> class.
         /// </summary>
-        public bool VariablesEnabled { get; set; }
+        public DbInstallerConfiguration()
+        {
+            this.Logger = new ConsoleUpgradeLog();          
+        }
+
 
         /// <summary>
         /// Ensures all expectations have been met regarding this configuration.
         /// </summary>
         public void Validate()
         {
-            if (Log == null) throw new ArgumentException("A log is required to build a database upgrader. Please use one of the logging extension methods");
-            if (ScriptExecutor == null) throw new ArgumentException("A ScriptExecutor is required");
-            if (Journal == null) throw new ArgumentException("A journal is required. Please use one of the Journal extension methods before calling Build()");
-            if (ScriptProviders.Count == 0) throw new ArgumentException("No script providers were added. Please use one of the WithScripts extension methods before calling Build()");
-            if (ConnectionFactory == null) throw new ArgumentException("The ConnectionFactory is null. What do you expect to upgrade?");
+            if (this.Logger == null) throw new ArgumentException("A log is required to build a database upgrader. Please use one of the logging extension methods");
+            if (this.DatabaseServerAdapter == null) throw new ArgumentException("A ScriptExecutor is required");
+            if (this.Journal == null) throw new ArgumentException("A journal is required. Please use one of the Journal extension methods before calling Build()");
+            if (this.ScriptProviders.Count == 0) throw new ArgumentException("No script providers were added. Please use one of the WithScripts extension methods before calling Build()");
+            if (this.ConnectionString == null) throw new ArgumentException("The ConnectionString is null. What do you expect to upgrade?");
         }
 
         /// <summary>

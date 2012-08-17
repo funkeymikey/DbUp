@@ -1,11 +1,10 @@
-﻿using DbUp.Builder;
-
-namespace DbUp
+﻿
+namespace DbUp.Builder
 {
     /// <summary>
     /// A fluent builder for creating database upgraders.
     /// </summary>
-    public static class DeployChanges
+    public static class ExecuteScripts
     {
         private static readonly SupportedDatabases Instance = new SupportedDatabases();
 

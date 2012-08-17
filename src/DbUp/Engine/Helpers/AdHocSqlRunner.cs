@@ -24,8 +24,8 @@ namespace DbUp.Helpers
         /// <param name="schema">The schema.</param>
         /// <param name="additionalScriptPreprocessors">The additional script preprocessors.</param>
         /// <remarks>Sets the <c>variablesEnabled</c> setting to <c>true</c>.</remarks>
-        public AdHocSqlRunner(Func<IDbConnection> connectionFactory, string schema, params IScriptPreprocessor[] additionalScriptPreprocessors)
-            : this(connectionFactory, schema, () => true, additionalScriptPreprocessors)
+        public AdHocSqlRunner(Func<IDbConnection> connectionFactory, params IScriptPreprocessor[] additionalScriptPreprocessors)
+            : this(connectionFactory, () => true, additionalScriptPreprocessors)
         { }
 
         /// <summary>
@@ -35,12 +35,11 @@ namespace DbUp.Helpers
         /// <param name="schema">The schema.</param>
         /// <param name="variablesEnabled">Function indicating <c>true</c> if variables should be replaced, <c>false</c> otherwise.</param>
         /// <param name="additionalScriptPreprocessors">The additional script preprocessors.</param>
-        public AdHocSqlRunner(Func<IDbConnection> connectionFactory, string schema, Func<bool> variablesEnabled, params IScriptPreprocessor[] additionalScriptPreprocessors)
+        public AdHocSqlRunner(Func<IDbConnection> connectionFactory, Func<bool> variablesEnabled, params IScriptPreprocessor[] additionalScriptPreprocessors)
         {
             this.connectionFactory = connectionFactory;
             this.variablesEnabled = variablesEnabled;
             this.additionalScriptPreprocessors = additionalScriptPreprocessors;
-            Schema = schema;
         }
 
         /// <summary>
@@ -55,10 +54,6 @@ namespace DbUp.Helpers
             return this;
         }
 
-        /// <summary>
-        /// Database Schema, should be null if database does not support schemas
-        /// </summary>
-        public string Schema { get; set; }
 
         /// <summary>
         /// Executes a scalar query.
@@ -150,10 +145,10 @@ namespace DbUp.Helpers
 
         private string Preprocess(string query)
         {
-            if (string.IsNullOrEmpty(Schema))
-                query = new StripSchemaPreprocessor().Process(query);
-            if (!string.IsNullOrEmpty(Schema) && !variables.ContainsKey("schema"))
-                variables.Add("schema", Schema);
+            //if (string.IsNullOrEmpty(Schema))
+            //    query = new StripSchemaPreprocessor().Process(query);
+            //if (!string.IsNullOrEmpty(Schema) && !variables.ContainsKey("schema"))
+            //    variables.Add("schema", Schema);
             if (variablesEnabled())
                 query = new VariableSubstitutionPreprocessor(variables).Process(query);
             query = additionalScriptPreprocessors.Aggregate(query, (current, additionalScriptPreprocessor) => additionalScriptPreprocessor.Process(current));

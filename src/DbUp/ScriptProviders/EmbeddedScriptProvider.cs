@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -13,8 +12,8 @@ namespace DbUp.ScriptProviders
     /// </summary>
     public class EmbeddedScriptProvider : IScriptProvider
     {
-        private readonly Assembly assembly;
-        private readonly Func<string, bool> filter;
+        protected readonly Assembly _assembly;
+        protected readonly Func<string, bool> _filter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmbeddedScriptProvider"/> class.
@@ -23,28 +22,28 @@ namespace DbUp.ScriptProviders
         /// <param name="filter">The filter.</param>
         public EmbeddedScriptProvider(Assembly assembly, Func<string, bool> filter)
         {
-            this.assembly = assembly;
-            this.filter = filter;
+            this._assembly = assembly;
+            this._filter = filter;
         }
 
         /// <summary>
         /// Gets all scripts that should be executed.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<SqlScript> GetScripts(Func<IDbConnection> connectionFactory)
+        public IEnumerable<SqlScript> GetScripts()
         {
-            return assembly
-                .GetManifestResourceNames()
-                .Where(filter)
-                .OrderBy(x => x)
-                .Select(ReadResourceAsScript)
-                .ToList();
+            string[] fileNames = _assembly.GetManifestResourceNames();
+
+            IEnumerable<string> filteredFiles = fileNames.Where(_filter).OrderBy(x => x);
+
+            IEnumerable<SqlScript> scriptObjects = filteredFiles.Select(ReadResourceAsScript);
+            return scriptObjects;
         }
 
-        private SqlScript ReadResourceAsScript(string scriptName)
+        protected virtual SqlScript ReadResourceAsScript(string scriptName)
         {
             string contents;
-            var resourceStream = assembly.GetManifestResourceStream(scriptName);
+            var resourceStream = _assembly.GetManifestResourceStream(scriptName);
             using (var resourceStreamReader = new StreamReader(resourceStream))
             {
                 contents = resourceStreamReader.ReadToEnd();

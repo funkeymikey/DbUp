@@ -20,7 +20,7 @@ namespace DbUp.Specification
             }
 
             //Verify supports scripts which specify schema (To Support SqlCe and Sql with Schemas)
-            var upgrader = DeployChanges.To
+            var upgrader = ExecuteScripts.To
                 .SqlCeDatabase(connectionString)
                 .WithScript("Script0001", "create table $schema$.Foo (Id int)")
                 .Build();
