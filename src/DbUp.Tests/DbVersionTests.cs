@@ -39,8 +39,8 @@ namespace DbUp.Tests
             DbVersion lowDbVersion = new DbVersion(0, 0, 0, 0);
             DbVersion highDbVersion = new DbVersion(0, 0, 0, 1);
 
-            Version lowVersion = new Version(lowDbVersion.GetVersionString());
-            Version highVersion = new Version(highDbVersion.GetVersionString());
+            Version lowVersion = new Version(lowDbVersion.VersionString);
+            Version highVersion = new Version(highDbVersion.VersionString);
 
             Assert.IsTrue(lowVersion.CompareTo(highVersion) < 0);
         }
@@ -51,8 +51,8 @@ namespace DbUp.Tests
             DbVersion lowDbVersion = new DbVersion(0, 0, 0, 1);
             DbVersion highDbVersion = new DbVersion(0, 0, 0, 10);
 
-            Version lowVersion = new Version(lowDbVersion.GetVersionString());
-            Version highVersion = new Version(highDbVersion.GetVersionString());
+            Version lowVersion = new Version(lowDbVersion.VersionString);
+            Version highVersion = new Version(highDbVersion.VersionString);
 
             Assert.IsTrue(lowVersion.CompareTo(highVersion) < 0);
         }
@@ -63,8 +63,8 @@ namespace DbUp.Tests
             DbVersion lowDbVersion = new DbVersion(0, 0, 0, 2);
             DbVersion highDbVersion = new DbVersion(0, 0, 0, 10);
 
-            Version lowVersion = new Version(lowDbVersion.GetVersionString());
-            Version highVersion = new Version(highDbVersion.GetVersionString());
+            Version lowVersion = new Version(lowDbVersion.VersionString);
+            Version highVersion = new Version(highDbVersion.VersionString);
 
             Assert.IsTrue(lowVersion.CompareTo(highVersion) < 0);
         }

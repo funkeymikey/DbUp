@@ -1,15 +1,13 @@
-﻿using System;
+﻿using DbUp.Engine;
+using DbUp.Engine.Output;
+using DbUp.ScriptProviders;
+using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using DbUp.Engine;
-using DbUp.Engine.Output;
-using DbUp.ScriptProviders;
 
 namespace DbUp.Support.SqlServer
 {
@@ -114,9 +112,8 @@ namespace DbUp.Support.SqlServer
 
         protected virtual DbVersion GetDbVersionFromScript(SqlScript script)
         {
-            //get the version numbers
-            Regex versionRegex = new Regex(VERSION_REGEX);
-            Match match = versionRegex.Match(script.Name);
+            //get the version numbers (search at end of string)            
+            Match match = Regex.Match(script.Name, VERSION_REGEX, RegexOptions.RightToLeft);
             short major = short.Parse(match.Groups["major"].Value);
             short minor = short.Parse(match.Groups["minor"].Value);
             short build = short.Parse(match.Groups["build"].Value);
