@@ -43,7 +43,6 @@ namespace DbUp.Support.SqlServer
         /// <returns>All executed scripts.</returns>
         public IDatabaseVersion GetVersion(Func<IDbConnection> connectionFactory)
         {
-            
             var exists = this.DoesVersionTableExist(connectionFactory);
             if (!exists)
             {
@@ -60,20 +59,20 @@ namespace DbUp.Support.SqlServer
 
                     using (IDataReader reader = command.ExecuteReader())
                     {
-                        reader.Read();
-                        if (reader.Depth == 0)
+                        if (!reader.Read())
                             return new DbVersion();
 
                         return new DbVersion(
-                            (Int16)reader["Major"],
-                            (Int16)reader["Minor"],
-                            (Int16)reader["Build"],
-                            (Int16)reader["Revision"],
-                            (string)reader["username"],
-                            (string)reader["comments"]);
+                                        (Int16)reader["Major"],
+                                        (Int16)reader["Minor"],
+                                        (Int16)reader["Build"],
+                                        (Int16)reader["Revision"],
+                                        (string)reader["username"],
+                                        (string)reader["comments"]);
                     }
                 }
             }
+
         }
 
         /// <summary>
@@ -161,6 +160,11 @@ namespace DbUp.Support.SqlServer
 
         }
 
+        public IEnumerable<SqlScript> OrderScripts(IEnumerable<SqlScript> scriptsToExecute)
+        {
+            IEnumerable<SqlScript> orderedScripts = scriptsToExecute.OrderBy(x => GetDbVersionFromScript(x));
+            return orderedScripts;
+        }
     }
 }
 

@@ -12,6 +12,8 @@ namespace SampleApplication
     {
         public static void Main(string[] args)
         {
+
+
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["test"].ConnectionString);
             //builder.InitialCatalog = Guid.NewGuid().ToString();
             string connectionString = builder.ToString();
@@ -25,9 +27,9 @@ namespace SampleApplication
 
             ScriptExecutingEngine executor = new ScriptExecutingEngine(installerConfig);
 
-            
+
             DbUp.Engine.ScriptExecutingEngine.DbInstallerMode installerMode = ScriptExecutingEngine.DbInstallerMode.Upgrade;
- 
+
             Console.WriteLine("Database connection string: " + connectionString);
             if (executor.DoesDbExist)
             {
@@ -51,7 +53,7 @@ namespace SampleApplication
             else
             {
                 Console.WriteLine("Database does not exist.  Create?");
-               
+
                 string choice = Console.ReadLine();
                 if (choice.StartsWith("y", StringComparison.InvariantCultureIgnoreCase))
                     installerMode = ScriptExecutingEngine.DbInstallerMode.Create;
@@ -59,7 +61,7 @@ namespace SampleApplication
                     Environment.Exit(0);
             }
 
-            Console.WriteLine("You have chosen to " + installerMode+ " your database, hit enter to continue");
+            Console.WriteLine("You have chosen to " + installerMode + " your database, hit enter to continue");
             Console.ReadLine();
 
             executor.Execute(installerMode);
@@ -72,10 +74,10 @@ namespace SampleApplication
             ////installerConfig.ConnectionFactory = () => new SqlConnection(uc.ConnectionString);
             ////installerConfig.Journal = new SqlTableJournal(() => new SqlConnection(connectionString), "DbVersion", new ConsoleUpgradeLog());
             ////installerConfig.Log = new ConsoleUpgradeLog();
-            
+
             ////installerConfig.ScriptProviders.Add(new EmbeddedScriptProvider(typeof(Program).Assembly, (fileName) => fileName.EndsWith(".sql")));
-            
-            
+
+
 
             //if(executor.DoesDbExist)
             //{

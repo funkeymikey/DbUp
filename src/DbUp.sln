@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbUp", "DbUp\DbUp.csproj", "{2D2C117A-7841-4285-A4CE-E7C4FC64AD9B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{C6A39A77-AEF6-421D-8198-E15821B80F9D}"
@@ -24,6 +24,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbUp.Console", "DbUp.Console\DbUp.Console.csproj", "{C4499BDA-7ED5-4CB6-9B44-E835854D9246}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbUp.SqlCe", "DbUp.SqlCe\DbUp.SqlCe.csproj", "{E7EDAFD6-1DD3-4D85-806A-20340032D2A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbUp.Tests", "DbUp.Tests\DbUp.Tests.csproj", "{9FC64182-4EC8-437D-89D2-CBD9B02ED3A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -112,6 +114,21 @@ Global
 		{E7EDAFD6-1DD3-4D85-806A-20340032D2A9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{E7EDAFD6-1DD3-4D85-806A-20340032D2A9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{E7EDAFD6-1DD3-4D85-806A-20340032D2A9}.Release|x86.ActiveCfg = Release|Any CPU
+		{9FC64182-4EC8-437D-89D2-CBD9B02ED3A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FC64182-4EC8-437D-89D2-CBD9B02ED3A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FC64182-4EC8-437D-89D2-CBD9B02ED3A1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9FC64182-4EC8-437D-89D2-CBD9B02ED3A1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9FC64182-4EC8-437D-89D2-CBD9B02ED3A1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9FC64182-4EC8-437D-89D2-CBD9B02ED3A1}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FC64182-4EC8-437D-89D2-CBD9B02ED3A1}.Default|Any CPU.Build.0 = Debug|Any CPU
+		{9FC64182-4EC8-437D-89D2-CBD9B02ED3A1}.Default|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9FC64182-4EC8-437D-89D2-CBD9B02ED3A1}.Default|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9FC64182-4EC8-437D-89D2-CBD9B02ED3A1}.Default|x86.ActiveCfg = Debug|Any CPU
+		{9FC64182-4EC8-437D-89D2-CBD9B02ED3A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FC64182-4EC8-437D-89D2-CBD9B02ED3A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FC64182-4EC8-437D-89D2-CBD9B02ED3A1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9FC64182-4EC8-437D-89D2-CBD9B02ED3A1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9FC64182-4EC8-437D-89D2-CBD9B02ED3A1}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

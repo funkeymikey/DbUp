@@ -110,6 +110,8 @@ namespace DbUp.Engine
             if(mode == DbInstallerMode.Upgrade)
                 scriptsToExecute = _journal.GetScriptsToExecute(scriptsToExecute, _databaseServerAdapter.GetConnectionFactory(_connectionString));
 
+            scriptsToExecute = _journal.OrderScripts(scriptsToExecute);
+
             return scriptsToExecute;
         }
 

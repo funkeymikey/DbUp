@@ -24,5 +24,7 @@ namespace DbUp.Engine
 
 
         IEnumerable<SqlScript> GetScriptsToExecute(IEnumerable<SqlScript> allScripts, Func<IDbConnection> connectionFactory);
+
+        IEnumerable<SqlScript> OrderScripts(IEnumerable<SqlScript> scriptsToExecute);
     }
 }

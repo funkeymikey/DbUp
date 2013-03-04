@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 using NDesk.Options;
+using DbUp.Builder;
 
 namespace DbUp.Console
 {
